@@ -1,4 +1,5 @@
 
+
 <?php
 	// Temperatur
 	$temp = shell_exec("cat /sys/class/thermal/thermal_zone0/temp");
@@ -14,7 +15,7 @@
 	exec("service plexmediaserver status", $plexstatus);
 	exec("ifconfig", $ipoutput);
 	exec("free", $ramoutput);
-
+	exec("uptime", $uptimeoutput);
 	//Ip Adressen
 	$ip = substr($ipoutput[1],4,-39 );
 	$ip1 = substr($ip,-15,13);
@@ -28,7 +29,11 @@
 	
 	$TotalRAM = substr($ramcalc[0],0,3);
 	$UsedRAM = substr($ramcalc[1],0,3);
-	$FreeRAM = substr($ramcalc[2],0,3);
+	$FreeRAM = $TotalRAM - $UsedRAM;
+	
+	//Uptime
+	$uptime = substr($uptimeoutput[0],12,6);
+
 
 ?>
 
@@ -58,6 +63,7 @@
 					echo '<div class="date"> CPU Temperatur: ' . $temprdy . '°C</div>';
 					echo '<div class="date"> RAM Auslastung </div>';
 					echo '<div class="date"> Total: ' . $TotalRAM . 'MB / Used: ' . $UsedRAM . 'MB / Free: ' . $FreeRAM . 'MB</div>';
+					echo '<div class="date"> Uptime: ' . $uptime . '</div>';
 				?>
 			</section>
 		</article>
